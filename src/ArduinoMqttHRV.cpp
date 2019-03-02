@@ -96,6 +96,8 @@ void setExhFanOff();
 void setExhFanOn();
 void increaseFanSpeed();
 void decreaseFanSpeed();
+void increaseTimer();
+void decreaseTimer();
 void printTemperature(float tempC, byte address[8]);
 void mqttPublishTemperature(float tempC, byte address[8]);
 
@@ -309,40 +311,7 @@ void handleSerial() {
         }
       }
     }
-/*
- while (Serial1.available() > 0) {
-   char incomingCharacter = Serial1.read();
-   switch (incomingCharacter) {
-     case '+':
-      increaseFanSpeed();
-      digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
-     break;
-     case '-':
-      decreaseFanSpeed();
-      digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
-     break;
-     case '?':
-      Serial1.write(fanSpeed+48);
-     break;
-     case 'A':
-      if (exhFanOff){
-        exhFanOffTime = 2;    // zero timer so fan turns on
-      } else {
-        exhFanOffTime = 0;
-      }
-     break;
-     case 'B':
-      exhFanOffTime = TimerLevel1;     // exh fan off for 300 seconds
-     break;
-     case 'C':
-      exhFanOffTime = TimerLevel2;     // exh fan off for 900 seconds
-     break;
-     case 'D':
-      exhFanOffTime = TimerLevel3;     // exh fan off for 1800 seconds
-     break;
-    }
- }
- */
+
 }
 
 // Handle fan speed messages to other arduino and MQTT
@@ -532,4 +501,3 @@ void mqttPublishTemperature(float tempC, byte address[8])
     client.publish(pubTopic, pubMessage);
   }
 }
-
