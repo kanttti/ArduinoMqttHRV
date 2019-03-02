@@ -118,7 +118,7 @@ DallasTemperature sensors(&oneWire);  // Pass OneWire reference to Dallas Temper
 //-------------------------------------------------------
 
 void setup() {
-  // Begin the Serial at 1200 Baud for other arduino and 19200 for USB debug
+  // Begin the Serial1 at 19200 Baud for other arduino and Serial at 19200 for USB debug
   Serial.begin(19200);
   Serial1.begin(19200);
   pinMode(LED_BUILTIN, OUTPUT);
@@ -244,10 +244,10 @@ void StateLoop() {
  
 
 /*-------------------------------------------------------------------------------------------*\
- * Every 0.1 second
+ * Every 0.05 second
 \*-------------------------------------------------------------------------------------------*/
 
-  if (!(state % (STATES/10))) {
+  if (!(state % (STATES/20))) {
     communicateFanSpeed();
     if (millis() < exh_fan_off_timer && exhFanOff) communicateTimer();
   }
@@ -351,8 +351,10 @@ void communicateFanSpeed() {
       Serial1.println(fanSpeed);
       Serial.print("Communicated fan speed is ");
       Serial.println(fanSpeed);
-      byte pubArray[] = { byte(fanSpeed+48) };
-      client.publish("stat/LTO/fanspeed", pubArray, 1);
+      if (client.connected()) {      // IF MQTT connected publish speed
+        byte pubArray[] = { byte(fanSpeed+48) };
+        client.publish("stat/LTO/fanspeed", pubArray, 1);
+      }
       fanSpeedMemory = fanSpeed;
       fanSpeedChanged = true;
     }
