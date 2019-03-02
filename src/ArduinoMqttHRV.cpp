@@ -314,10 +314,10 @@ void handleSerial() {
 
 }
 
-// Handle fan speed messages to other arduino and MQTT
+// Handle timer messages to other arduino and MQTT
 
 void communicateTimer() {
-   int timeLeft = (exh_fan_off_timer - millis()) / 1000;  // Calculate remaining time
+  int timeLeft = (exh_fan_off_timer - millis()) / 1000;  // Calculate remaining time
    int level = 0;                                         // define levels based on seconds to communicate to other Arduino via Serial 
      if (timeLeft > 0) {
        level = 1;
