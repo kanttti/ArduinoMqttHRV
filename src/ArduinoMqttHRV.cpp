@@ -318,29 +318,12 @@ void handleSerial() {
 
 void communicateTimer() {
   int timeLeft = (exh_fan_off_timer - millis()) / 1000;  // Calculate remaining time
-   int level = 0;                                         // define levels based on seconds to communicate to other Arduino via Serial 
-     if (timeLeft > 0) {
-       level = 1;
-     }
-     if (timeLeft > TimerLevel1) {
-       level = 2;
-     }
-     if (timeLeft > TimerLevel2) {
-       level = 3;
-     }
-     if (timerLevel != level) {
-       Serial1.print("Timer ");
-       Serial1.println(level);                       // Send O,P,Q... to other arduino to tell the level.
-       Serial.print("Timer level = ");               // Just for DEBUG
-       Serial.print(level);                          // Just for DEBUG
-       Serial.print(" (");                           // Just for DEBUG
-       Serial.write(level+78);                       // Just for DEBUG
-       Serial.println(")");                          // Just for DEBUG
-       timerLevel = level;
-       byte pubArray[] = { byte(level+48) };            // Publish level as numbers 1-3 to MQTT
-       client.publish("stat/LTO/exhFanOffTimer", pubArray, 1);
-     }
-     
+  Serial1.print("Timer ");
+  Serial1.println(timeLeft);
+  if (client.connected()) {      // IF MQTT connected publish speed
+    byte pubArray[] = { byte(timeLeft) };            // Publish level as numbers 1-3 to MQTT
+    client.publish("stat/LTO/exhFanOffTimer", pubArray, 1);
+  } 
 }
 
 // Handle fan speed messages to other arduino and MQTT
