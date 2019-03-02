@@ -32,6 +32,7 @@ Q   Timer level 3 (3 leds on)
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <ArduinoJson.h>
+#include <CmdParser.hpp>
 
 //---------------------------------------------------------------------------
 
@@ -81,6 +82,8 @@ typedef struct
 
 Addresses SensorAddresses[MAXIMUM_NUMBER_OF_SENSORS];
 
+CmdParser cmdParser;
+
 // Declare functions
 void mqttCallback(char* topic, byte* payload, unsigned int length);
 void StateLoop();
@@ -115,7 +118,7 @@ DallasTemperature sensors(&oneWire);  // Pass OneWire reference to Dallas Temper
 void setup() {
   // Begin the Serial at 1200 Baud for other arduino and 19200 for USB debug
   Serial.begin(19200);
-  Serial1.begin(1200);
+  Serial1.begin(19200);
   pinMode(LED_BUILTIN, OUTPUT);
   delay(3000);   // wait for 3 seconds to let Ethernet board startup properly
   pinMode(ExhaustFanOffPin, OUTPUT);
@@ -166,15 +169,19 @@ void setup() {
     // Command all devices on bus to read temperature  
   sensors.requestTemperatures();  
   lastTempRequest = millis();
+
+  Serial1.print("Speed ");
+  Serial1.println(fanSpeed);
+
 }  //--(end setup )---
 
 
 
 
 void loop() {
-  if (!client.connected()) {      // IF MQTT not connected try to reconnect
-    reconnect();
-  }
+//  if (!client.connected()) {      // IF MQTT not connected try to reconnect
+//    reconnect();
+//  }
   if (millis() >= state_loop_timer) StateLoop();
   handleSerial();
   client.loop();
@@ -267,6 +274,42 @@ void reconnect() {
 // Handle serial messages from other arduino
  
 void handleSerial() {
+
+  CmdBuffer<32> myBuffer;
+  if (Serial1.available()) {
+    if (myBuffer.readFromSerial(&Serial1,500)) {
+          
+        if (cmdParser.parseCmd(&myBuffer) != CMDPARSER_ERROR) {
+            // SERIAL COMMANDS
+            
+            // Speed
+            if (cmdParser.equalCommand_P(PSTR("Speed"))) {
+                Serial.print(cmdParser.getCmdParam(0));
+                Serial.print(" ");
+                Serial.println(cmdParser.getCmdParam(1));
+                if (cmdParser.equalCmdParam(1,"up")) {
+                  increaseFanSpeed();
+                } else if (cmdParser.equalCmdParam(1,"down")) {
+                  decreaseFanSpeed();
+                }
+            }
+
+            // Timer
+            if (cmdParser.equalCommand_P(PSTR("Timer"))) {
+                Serial.print(cmdParser.getCmdParam(0));
+                Serial.print(" ");
+                Serial.println(cmdParser.getCmdParam(1));
+                if (cmdParser.equalCmdParam(1,"up")) {
+                  increaseTimer();
+                } else if (cmdParser.equalCmdParam(1,"down")) {
+                  decreaseTimer();
+                }
+            }
+
+        }
+      }
+    }
+/*
  while (Serial1.available() > 0) {
    char incomingCharacter = Serial1.read();
    switch (incomingCharacter) {
@@ -299,6 +342,7 @@ void handleSerial() {
      break;
     }
  }
+ */
 }
 
 // Handle fan speed messages to other arduino and MQTT
@@ -316,7 +360,8 @@ void communicateTimer() {
        level = 3;
      }
      if (timerLevel != level) {
-       Serial1.write(level+78);                      // Send O,P,Q... to other arduino to tell the level.
+       Serial1.print("Timer ");
+       Serial1.println(level);                       // Send O,P,Q... to other arduino to tell the level.
        Serial.print("Timer level = ");               // Just for DEBUG
        Serial.print(level);                          // Just for DEBUG
        Serial.print(" (");                           // Just for DEBUG
@@ -333,8 +378,10 @@ void communicateTimer() {
 
 void communicateFanSpeed() {
    if (fanSpeed != fanSpeedMemory) {
-      Serial1.write(fanSpeed+48);
-//      Serial.write(fanSpeed+48);
+      Serial1.print("Speed ");
+      Serial1.println(fanSpeed);
+      Serial.print("Communicated fan speed is ");
+      Serial.println(fanSpeed);
       byte pubArray[] = { byte(fanSpeed+48) };
       client.publish("stat/LTO/fanspeed", pubArray, 1);
       fanSpeedMemory = fanSpeed;
