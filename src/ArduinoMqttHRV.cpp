@@ -406,16 +406,18 @@ void decreaseFanSpeed() {
 // Increase Timer
  
 void increaseTimer() {
-  if (calculateExhaustTimeLeft() < 1800){
-    
+  int timeLeft = calculateExhaustTimeLeft();
+  if (timeLeft < 1800){
+    exhFanOffTime = timeLeft + 60;
   }
 }
 
 // Decrease Timer
  
 void decreaseTimer() {
-  if (calculateExhaustTimeLeft() > 0){
-    
+  int timeLeft = calculateExhaustTimeLeft();
+  if (timeLeft > 0){
+    exhFanOffTime = timeLeft - 60;
   }
 }
 
