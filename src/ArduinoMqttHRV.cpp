@@ -176,6 +176,9 @@ void setup() {
   Serial1.print("Speed ");
   Serial1.println(fanSpeed);
 
+  // Setup ethernet connection to MQTT broker
+  Ethernet.begin(mac, ip);
+
 }  //--(end setup )---
 
 
