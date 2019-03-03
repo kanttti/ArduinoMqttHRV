@@ -139,8 +139,6 @@ void setup() {
     EEPROM.write(FanSpeed_EEADDR, 1);
   }
   
-  // Setup ethernet connection to MQTT broker
-  Ethernet.begin(mac, ip);
     // Initialize Dallas Temperature measurement library
 
   int i = 0;
