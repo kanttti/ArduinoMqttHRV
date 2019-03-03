@@ -423,7 +423,7 @@ void decreaseTimer() {
   if (timeLeft > 0){
     exhFanOffTime = timeLeft - 60;
   }
-  if (exhFanOffTime <= 0) {
+  if (exhFanOffTime <= 0 && exhFanOff) {
     exhFanOffTime = 1;
   }
 }
