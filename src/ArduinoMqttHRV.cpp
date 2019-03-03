@@ -208,6 +208,8 @@ void StateLoop() {
     state = 0;
     handleFanSpeed();
     
+    if (calculateExhaustTimeLeft() > 0) communicateTimer(); //Communicate timer to MQTT and Serial once per second
+    
     temp_meas_period++;
     if (temp_meas_period == TEMPERATURE_MEAS_PERIOD -2) {
       sensors.requestTemperatures();
@@ -250,7 +252,6 @@ void StateLoop() {
 
   if (!(state % (STATES/10))) {
     communicateFanSpeed();
-    if (calculateExhaustTimeLeft() > 0) communicateTimer();
   }
 }
 
