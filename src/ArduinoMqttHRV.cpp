@@ -418,6 +418,9 @@ void decreaseTimer() {
   if (timeLeft > 0){
     exhFanOffTime = timeLeft - 60;
   }
+  if (exhFanOffTime <= 0) {
+    exhFanOffTime = 1;
+  }
 }
 
 int calculateExhaustTimeLeft() {
