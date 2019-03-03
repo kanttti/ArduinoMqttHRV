@@ -189,7 +189,7 @@ void loop() {
   handleSerial();
   client.loop();
   if (exhFanOffTime > 0) setExhFanOff();
-  if (calculateExhaustTimeLeft() <= 0) setExhFanOn();
+  if (calculateExhaustTimeLeft() <= 0 && exhFanOff) setExhFanOn();
 }
 
 /*********************************************************************************************\
