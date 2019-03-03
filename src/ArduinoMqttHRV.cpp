@@ -396,6 +396,7 @@ void setExhFanOn() {
 //  byte pubArray[] = { byte(level+48) };              // Send 0 to MQTT to tell timer is off
 //  client.publish("stat/LTO/timer", pubArray, 1);
   exhFanOff = false;
+  exh_fan_off_timer = 0;
 }
 
 // Increase Fan speed
