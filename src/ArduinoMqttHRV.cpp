@@ -164,6 +164,7 @@ void setup() {
     Serial.println(writedisplay);
     }
 
+  sensors.begin();
     // set the resolution to 10 bit (Can be 9 to 12 bits .. lower is faster)
   for (i = 0; i < numberOfSensors; i = i + 1) {
     sensors.setResolution(SensorAddresses[i].SensorAddress, SENSOR_RESOLUTION);
