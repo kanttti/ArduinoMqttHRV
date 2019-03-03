@@ -189,7 +189,7 @@ void loop() {
   handleSerial();
   client.loop();
   if (exhFanOffTime > 0) setExhFanOff();
-  if (millis() >= exh_fan_off_timer && exhFanOff) setExhFanOn();
+  if (calculateExhaustTimeLeft() <= 0) setExhFanOn();
 }
 
 /*********************************************************************************************\
@@ -250,7 +250,7 @@ void StateLoop() {
 
   if (!(state % (STATES/20))) {
     communicateFanSpeed();
-    if (millis() < exh_fan_off_timer && exhFanOff) communicateTimer();
+    if (calculateExhaustTimeLeft() > 0) communicateTimer();
   }
 }
 
