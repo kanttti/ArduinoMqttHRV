@@ -334,7 +334,7 @@ void communicateTimer() {
   if (client.connected()) {      // IF MQTT connected publish speed
     char pubArray[10];
     itoa(timeLeft, pubArray, 10);            // Publish timer as seconds to MQTT
-    client.publish("stat/LTO/exhFanOffTimer", pubArray, 1);
+    client.publish("stat/LTO/exhFanOffTimer", pubArray);
   } 
 }
 
