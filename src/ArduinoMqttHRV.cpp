@@ -318,7 +318,7 @@ void handleSerial() {
 // Handle timer messages to other arduino and MQTT
 
 void communicateTimer() {
-  int timeLeft = (exh_fan_off_timer - millis()) / 1000;  // Calculate remaining time
+  int timeLeft = calculateExhaustTimeLeft();  // Calculate remaining time
   Serial1.print("Timer ");
   Serial1.println(timeLeft);
   if (client.connected()) {      // IF MQTT connected publish speed
@@ -406,8 +406,7 @@ void decreaseFanSpeed() {
 // Increase Timer
  
 void increaseTimer() {
-  int timeLeft = (exh_fan_off_timer - millis()) / 1000;
-  if (timeLeft < 1800){
+  if (calculateExhaustTimeLeft() < 1800){
     
   }
 }
@@ -415,8 +414,7 @@ void increaseTimer() {
 // Decrease Timer
  
 void decreaseTimer() {
-  calculateExhaustTimeLeft();
-  if (timeLeft > 0){
+  if (calculateExhaustTimeLeft() > 0){
     
   }
 }
