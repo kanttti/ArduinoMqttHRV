@@ -324,10 +324,14 @@ void handleSerial() {
 
 void communicateTimer() {
   int timeLeft = calculateExhaustTimeLeft();  // Calculate remaining time
+  if (timeLeft < 0) {
+    timeLeft = 0;
+  }
   Serial1.print("Timer ");
   Serial1.println(timeLeft);
   if (client.connected()) {      // IF MQTT connected publish speed
-    byte pubArray[] = { byte(timeLeft) };            // Publish level as numbers 1-3 to MQTT
+    char pubArray[10];
+    itoa(timeLeft, pubArray, 10);            // Publish level as numbers 1-3 to MQTT
     client.publish("stat/LTO/exhFanOffTimer", pubArray, 1);
   } 
 }
@@ -386,7 +390,7 @@ void setExhFanOff() {
 void setExhFanOn() {
   digitalWrite(ExhaustFanOffPin, HIGH);
   Serial.println("Setting Exhaust Fan On");
-  Serial1.println("Timer 0");                            // Send 0 for Timer
+  communicateTimer();
 //  byte pubArray[] = { byte(level+48) };              // Send 0 to MQTT to tell timer is off
 //  client.publish("stat/LTO/timer", pubArray, 1);
   exhFanOff = false;
