@@ -182,9 +182,9 @@ void setup() {
 
 
 void loop() {
-//  if (!client.connected()) {      // IF MQTT not connected try to reconnect
-//    reconnect();
-//  }
+  if (!client.connected()) {      // IF MQTT not connected try to reconnect
+    reconnect();
+  }
   if (millis() >= state_loop_timer) StateLoop();
   handleSerial();
   client.loop();
