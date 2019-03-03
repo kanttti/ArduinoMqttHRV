@@ -255,8 +255,8 @@ void StateLoop() {
 }
 
 void reconnect() {
-  if (millis() >= reconnect_loop_timer) {          // Try every 10 seconds 
-    reconnect_loop_timer = millis() + (10000);
+  if (millis() >= reconnect_loop_timer) {          // Try every 60 seconds 
+    reconnect_loop_timer = millis() + (60000);
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
     if (client.connect(MQTT_CLIENTNAME,MQTT_USERNAME,MQTT_PASSWORD)) {    // change as desired - clientname must be unique for MQTT broker
@@ -269,7 +269,7 @@ void reconnect() {
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" try again in 10 seconds");
+      Serial.println(" try again in 60 seconds");
     }
   }
 }
