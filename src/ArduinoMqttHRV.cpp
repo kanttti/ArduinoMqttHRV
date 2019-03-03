@@ -145,6 +145,7 @@ void setup() {
   int i = 0;
   while(oneWire.search(SensorAddresses[i].SensorAddress)) {
     i++;
+    delay(1000);
   }
   numberOfSensors = i;
   for (i = 0; i < numberOfSensors; i = i +1) {
@@ -162,7 +163,7 @@ void setup() {
               SensorAddresses[i].SensorAddress [6],
               SensorAddresses[i].SensorAddress [7]);
     Serial.println(writedisplay);
-    }
+  }
 
   sensors.begin();
     // set the resolution to 10 bit (Can be 9 to 12 bits .. lower is faster)
