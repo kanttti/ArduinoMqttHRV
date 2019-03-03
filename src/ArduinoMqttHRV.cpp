@@ -142,7 +142,7 @@ void setup() {
   // Setup ethernet connection to MQTT broker
   Ethernet.begin(mac, ip);
     // Initialize Dallas Temperature measurement library
-  sensors.begin();
+
   int i = 0;
   while(oneWire.search(SensorAddresses[i].SensorAddress)) {
     i++;
