@@ -287,6 +287,7 @@ void handleSerial() {
             
             // Speed
             if (cmdParser.equalCommand_P(PSTR("Speed"))) {
+                Serial.print("Received ");
                 Serial.print(cmdParser.getCmdParam(0));
                 Serial.print(" ");
                 Serial.println(cmdParser.getCmdParam(1));
@@ -299,6 +300,7 @@ void handleSerial() {
 
             // Timer
             if (cmdParser.equalCommand_P(PSTR("Timer"))) {
+                Serial.print("Received ");
                 Serial.print(cmdParser.getCmdParam(0));
                 Serial.print(" ");
                 Serial.println(cmdParser.getCmdParam(1));
