@@ -406,8 +406,11 @@ void decreaseFanSpeed() {
  
 void increaseTimer() {
   int timeLeft = calculateExhaustTimeLeft();
-  if (timeLeft < 1800){
+  Serial.println(timeLeft);
+  if (timeLeft > 0){
     exhFanOffTime = timeLeft + 60;
+  } else {
+    exhFanOffTime = 60;
   }
 }
 
