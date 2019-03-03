@@ -57,7 +57,6 @@ Q   Timer level 3 (3 leds on)
 int fanSpeed = 1;
 int fanSpeedMemory = 255;
 int exhFanOffTime = 0;
-int timerLevel = 0;
 int temp_meas_period = 0;
 unsigned long state_loop_timer = 0;
 unsigned long reconnect_loop_timer = 0;
