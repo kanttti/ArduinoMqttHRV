@@ -100,6 +100,7 @@ void increaseTimer();
 void decreaseTimer();
 void printTemperature(float tempC, byte address[8]);
 void mqttPublishTemperature(float tempC, byte address[8]);
+int calculateExhaustTimeLeft();
 
 // MAC addrees and IP address
 byte mac[]    = {  0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED };
@@ -401,6 +402,29 @@ void decreaseFanSpeed() {
         fanSpeed--;
   }
 }
+
+// Increase Timer
+ 
+void increaseTimer() {
+  int timeLeft = (exh_fan_off_timer - millis()) / 1000;
+  if (timeLeft < 1800){
+    
+  }
+}
+
+// Decrease Timer
+ 
+void decreaseTimer() {
+  calculateExhaustTimeLeft();
+  if (timeLeft > 0){
+    
+  }
+}
+
+int calculateExhaustTimeLeft() {
+  return (exh_fan_off_timer - millis()) / 1000;
+  }
+
 
 
 // Handle and convert incoming MQTT messages ----------------------------------------
