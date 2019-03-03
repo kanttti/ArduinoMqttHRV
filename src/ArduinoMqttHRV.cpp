@@ -43,9 +43,6 @@ Q   Timer level 3 (3 leds on)
 #define ExhaustFanOffPin 38 // Pin to use for exhaust fan relay
 #define IntakeFanOffPin 42 // Pin to use for exhaust fan relay
 #define AirHeaterPin 40 // Pin to use for exhaust fan relay
-#define TimerLevel1 300     // Seconds for exhaust fan timer for each level from Arduino Nano (Default:300)
-#define TimerLevel2 900     // Seconds for exhaust fan timer for each level from Arduino Nano (Default:900)
-#define TimerLevel3 1800    // Seconds for exhaust fan timer for each level from Arduino Nano (Default:1800)
 #define TEMPERATURE_MEAS_PERIOD 60 // Interval for temperature measurement in seconds
 #define MQTT_CLIENTNAME "ArduinoLTO"
 #define MQTT_USERNAME ""
