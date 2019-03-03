@@ -122,6 +122,7 @@ void setup() {
   // Begin the Serial1 at 19200 Baud for other arduino and Serial at 19200 for USB debug
   Serial.begin(19200);
   Serial1.begin(19200);
+  oneWire.reset_search();
   pinMode(LED_BUILTIN, OUTPUT);
   delay(3000);   // wait for 3 seconds to let Ethernet board startup properly
   pinMode(ExhaustFanOffPin, OUTPUT);
@@ -140,7 +141,7 @@ void setup() {
   
   // Setup ethernet connection to MQTT broker
   Ethernet.begin(mac, ip);
-  // Initialize Dallas Temperature measurement library
+    // Initialize Dallas Temperature measurement library
   sensors.begin();
   int i = 0;
   while(oneWire.search(SensorAddresses[i].SensorAddress)) {
