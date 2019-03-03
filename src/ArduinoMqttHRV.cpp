@@ -382,6 +382,7 @@ void setExhFanOff() {
   Serial.print("Setting Exhaust Fan Off for ");
   Serial.print(exhFanOffTime);
   Serial.println(" seconds");
+  client.publish("stat/LTO/exhFanStatus","OFF");
   communicateTimer();
   exhFanOff = true;
   exhFanOffTime = 0;
@@ -392,9 +393,8 @@ void setExhFanOff() {
 void setExhFanOn() {
   digitalWrite(ExhaustFanOffPin, HIGH);
   Serial.println("Setting Exhaust Fan On");
+  client.publish("stat/LTO/exhFanStatus","ON");
   communicateTimer();
-//  byte pubArray[] = { byte(level+48) };              // Send 0 to MQTT to tell timer is off
-//  client.publish("stat/LTO/timer", pubArray, 1);
   exhFanOff = false;
   exh_fan_off_timer = 0;
 }
