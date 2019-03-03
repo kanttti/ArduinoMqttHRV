@@ -245,10 +245,10 @@ void StateLoop() {
  
 
 /*-------------------------------------------------------------------------------------------*\
- * Every 0.05 second
+ * Every 0.10 second
 \*-------------------------------------------------------------------------------------------*/
 
-  if (!(state % (STATES/20))) {
+  if (!(state % (STATES/10))) {
     communicateFanSpeed();
     if (calculateExhaustTimeLeft() > 0) communicateTimer();
   }
