@@ -421,7 +421,7 @@ void decreaseTimer() {
 
 int calculateExhaustTimeLeft() {
   return (exh_fan_off_timer - millis()) / 1000;
-  }
+}
 
 
 
