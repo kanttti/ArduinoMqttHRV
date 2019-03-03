@@ -263,10 +263,10 @@ void reconnect() {
     Serial.print("Attempting MQTT connection...");
     // Attempt to connect
     if (client.connect(MQTT_CLIENTNAME,MQTT_USERNAME,MQTT_PASSWORD)) {    // change as desired - clientname must be unique for MQTT broker
+      Serial.println("connected");
       client.publish("stat/LTO/connected","Online");
       byte pubArray[] = { byte(numberOfSensors+48) };
       client.publish("stat/LTO/sensorsfound", pubArray, 1);
-      Serial.println("connected");
       pubArray[0] = { byte(fanSpeed+48) };
       client.publish("stat/LTO/fanspeed", pubArray, 1);
       client.subscribe("cmnd/LTO/fanspeed");          // subscribe to topic
