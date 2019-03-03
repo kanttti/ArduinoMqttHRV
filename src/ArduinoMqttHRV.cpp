@@ -380,8 +380,7 @@ void setExhFanOff() {
 void setExhFanOn() {
   digitalWrite(ExhaustFanOffPin, HIGH);
   Serial.println("Setting Exhaust Fan On");
-//  Serial1.write("N");                            // Send "N" (Normal mode) to other arduino
-//  int level = 0;
+  Serial1.write("Timer 0");                            // Send 0 for Timer
 //  byte pubArray[] = { byte(level+48) };              // Send 0 to MQTT to tell timer is off
 //  client.publish("stat/LTO/timer", pubArray, 1);
   exhFanOff = false;
