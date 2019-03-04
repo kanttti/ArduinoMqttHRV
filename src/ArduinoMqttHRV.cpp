@@ -438,8 +438,8 @@ void decreaseTimer() {
   }
 }
 
-int calculateExhaustTimeLeft() {
-  return (exh_fan_off_timer - millis()) / 1000;
+long calculateExhaustTimeLeft() {
+  return (exh_fan_off_timer / 1000 - millis() / 1000);
 }
 
 
