@@ -329,6 +329,8 @@ void communicateTimer() {
   if (timeLeft < 0) {
     timeLeft = 0;
   }
+  Serial.print("Communicated Timer is ");
+  Serial.println(timeLeft);
   Serial1.print("Timer ");
   Serial1.println(timeLeft);
   if (client.connected()) {      // IF MQTT connected publish speed
