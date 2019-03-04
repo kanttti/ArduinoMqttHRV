@@ -96,7 +96,7 @@ void increaseTimer();
 void decreaseTimer();
 void printTemperature(float tempC, byte address[8]);
 void mqttPublishTemperature(float tempC, byte address[8]);
-int calculateExhaustTimeLeft();
+long calculateExhaustTimeLeft();
 
 // MAC addrees and IP address
 byte mac[]    = {  0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED };
@@ -325,7 +325,7 @@ void handleSerial() {
 // Handle timer messages to other arduino and MQTT
 
 void communicateTimer() {
-  int timeLeft = calculateExhaustTimeLeft();  // Calculate remaining time
+  long timeLeft = calculateExhaustTimeLeft();  // Calculate remaining time
   if (timeLeft < 0) {
     timeLeft = 0;
   }
@@ -418,7 +418,7 @@ void decreaseFanSpeed() {
 // Increase Timer
  
 void increaseTimer() {
-  int timeLeft = calculateExhaustTimeLeft();
+  long timeLeft = calculateExhaustTimeLeft();
   if (timeLeft > 0){
     exhFanOffTime = timeLeft + 60;
   } else {
@@ -429,7 +429,7 @@ void increaseTimer() {
 // Decrease Timer
  
 void decreaseTimer() {
-  int timeLeft = calculateExhaustTimeLeft();
+  long timeLeft = calculateExhaustTimeLeft();
   if (timeLeft > 0){
     exhFanOffTime = timeLeft - 60;
   }
