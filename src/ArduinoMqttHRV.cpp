@@ -43,9 +43,6 @@ Q   Timer level 3 (3 leds on)
 #define ExhaustFanOffPin 38 // Pin to use for exhaust fan relay
 #define IntakeFanOffPin 42 // Pin to use for exhaust fan relay
 #define AirHeaterPin 40 // Pin to use for exhaust fan relay
-#define TimerLevel1 300     // Seconds for exhaust fan timer for each level from Arduino Nano (Default:300)
-#define TimerLevel2 900     // Seconds for exhaust fan timer for each level from Arduino Nano (Default:900)
-#define TimerLevel3 1800    // Seconds for exhaust fan timer for each level from Arduino Nano (Default:1800)
 #define TEMPERATURE_MEAS_PERIOD 60 // Interval for temperature measurement in seconds
 #define MQTT_CLIENTNAME "ArduinoLTO"
 #define MQTT_USERNAME ""
@@ -60,7 +57,6 @@ Q   Timer level 3 (3 leds on)
 int fanSpeed = 1;
 int fanSpeedMemory = 255;
 int exhFanOffTime = 0;
-int timerLevel = 0;
 int temp_meas_period = 0;
 unsigned long state_loop_timer = 0;
 unsigned long reconnect_loop_timer = 0;
@@ -100,7 +96,7 @@ void increaseTimer();
 void decreaseTimer();
 void printTemperature(float tempC, byte address[8]);
 void mqttPublishTemperature(float tempC, byte address[8]);
-int calculateExhaustTimeLeft();
+long calculateExhaustTimeLeft();
 
 // MAC addrees and IP address
 byte mac[]    = {  0xDE, 0xED, 0xBA, 0xFE, 0xFE, 0xED };
@@ -329,16 +325,18 @@ void handleSerial() {
 // Handle timer messages to other arduino and MQTT
 
 void communicateTimer() {
-  int timeLeft = calculateExhaustTimeLeft();  // Calculate remaining time
+  long timeLeft = calculateExhaustTimeLeft();  // Calculate remaining time
   if (timeLeft < 0) {
     timeLeft = 0;
   }
+  Serial.print("Communicated Timer is ");
+  Serial.println(timeLeft);
   Serial1.print("Timer ");
   Serial1.println(timeLeft);
   if (client.connected()) {      // IF MQTT connected publish speed
     char pubArray[10];
     itoa(timeLeft, pubArray, 10);            // Publish timer as seconds to MQTT
-    client.publish("stat/LTO/exhFanOffTimer", pubArray, 1);
+    client.publish("stat/LTO/exhFanOffTimer", pubArray);
   } 
 }
 
@@ -386,6 +384,7 @@ void setExhFanOff() {
   Serial.print("Setting Exhaust Fan Off for ");
   Serial.print(exhFanOffTime);
   Serial.println(" seconds");
+  client.publish("stat/LTO/exhFanStatus","OFF");
   communicateTimer();
   exhFanOff = true;
   exhFanOffTime = 0;
@@ -397,9 +396,9 @@ void setExhFanOn() {
   digitalWrite(ExhaustFanOffPin, HIGH);
   Serial.println("Setting Exhaust Fan On");
   communicateTimer();
-//  byte pubArray[] = { byte(level+48) };              // Send 0 to MQTT to tell timer is off
-//  client.publish("stat/LTO/timer", pubArray, 1);
+  client.publish("stat/LTO/exhFanStatus","ON");
   exhFanOff = false;
+  exh_fan_off_timer = 0;
 }
 
 // Increase Fan speed
@@ -421,7 +420,7 @@ void decreaseFanSpeed() {
 // Increase Timer
  
 void increaseTimer() {
-  int timeLeft = calculateExhaustTimeLeft();
+  long timeLeft = calculateExhaustTimeLeft();
   if (timeLeft > 0){
     exhFanOffTime = timeLeft + 60;
   } else {
@@ -432,7 +431,7 @@ void increaseTimer() {
 // Decrease Timer
  
 void decreaseTimer() {
-  int timeLeft = calculateExhaustTimeLeft();
+  long timeLeft = calculateExhaustTimeLeft();
   if (timeLeft > 0){
     exhFanOffTime = timeLeft - 60;
   }
@@ -441,8 +440,8 @@ void decreaseTimer() {
   }
 }
 
-int calculateExhaustTimeLeft() {
-  return (exh_fan_off_timer - millis()) / 1000;
+long calculateExhaustTimeLeft() {
+  return (exh_fan_off_timer / 1000 - millis() / 1000);
 }
 
 
