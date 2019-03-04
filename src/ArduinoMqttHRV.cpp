@@ -395,6 +395,7 @@ void setExhFanOff() {
 void setExhFanOn() {
   digitalWrite(ExhaustFanOffPin, HIGH);
   Serial.println("Setting Exhaust Fan On");
+  communicateTimer();
   client.publish("stat/LTO/exhFanStatus","ON");
   communicateTimer();
   exhFanOff = false;
