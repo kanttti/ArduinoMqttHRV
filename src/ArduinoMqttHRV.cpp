@@ -397,7 +397,6 @@ void setExhFanOn() {
   Serial.println("Setting Exhaust Fan On");
   communicateTimer();
   client.publish("stat/LTO/exhFanStatus","ON");
-  communicateTimer();
   exhFanOff = false;
   exh_fan_off_timer = 0;
 }
