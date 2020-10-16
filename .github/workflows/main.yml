@@ -28,13 +28,13 @@ jobs:
         run: echo Hello, world!
 
       - uses: arduino/actions/libraries/compile-examples@master
-          with:
-            fqbn: 'arduino:avr:uno'
-            libraries: |
-              - name: Ethernet
-              - name: PubSubClient
-              - name: OneWire
-              - name: DallasTemperature
-              - name: ArduinoJson
-              - name: CmdParser
-              
+        with:
+          fqbn: 'arduino:avr:uno'
+          libraries: |
+            - name: Ethernet
+            - name: PubSubClient
+            - name: OneWire
+            - name: DallasTemperature
+            - name: ArduinoJson
+            - name: CmdParser
+            
